@@ -1,0 +1,10 @@
+{
+  "client": {
+    "whoKnows": {
+      "baseUrl": "https://whoknows.com/api/v1",
+      "headers": {
+        "X-APIKey": "api_key_goes_here"
+      }
+    }
+  }
+}
