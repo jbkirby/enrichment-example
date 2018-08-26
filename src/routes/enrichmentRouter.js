@@ -4,8 +4,11 @@ const handler = require('../enrichment/enrichmentHandler');
 const router = express.Router();
 
 /**
- * Enrichment endpoint. Accepts talent identifiers (e.g. email, linkedin URL) as query
- * parameters, passing those identifiers to all registered enrichment sources. 
+ * Enrichment endpoint. Accepts talent identifiers (e.g. email, linkedin URL) as
+ * query parameters, passing those identifiers to all registered enrichment
+ * sources.
+ * 
+ * Unhandled exceptions are passed to the global error handler.
  */
 router.get('/', (req, res, next) => {
   handler(req)

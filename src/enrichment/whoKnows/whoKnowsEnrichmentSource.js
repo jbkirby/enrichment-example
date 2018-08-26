@@ -1,7 +1,9 @@
 const axios = require('axios')
 const config = require('config');
 
-// API configuration
+/**
+ * API configuration.
+ */
 const baseUrl = config.get('client.whoKnows.baseUrl');
 const headers = config.get('client.whoKnows.headers');
 
@@ -21,7 +23,7 @@ const getFromLinkedinUrl = async (event) => {
 };
 
 /**
- * Make WhoKnows API request.
+ * Generalized WhoKnows API request. Results are mapped to internal format.
  * 
  * @param {*} url 
  * @param {*} params 
@@ -34,8 +36,8 @@ const makeRequest = async (url, params) => {
 }
 
 /**
- * Given a raw result from the WhoKnows API, map to a consistent internal
- * representation (to be defined).
+ * Given a raw result from the WhoKnows API, map to an internal format that is
+ * consistent between enrichment sources (to be defined).
  * 
  * TODO define our internal representation.
  * 
@@ -46,18 +48,23 @@ const toInternalFormat = (result) => {
 }
 
 /**
- * If params contains a LinkedIn URL and/or an email address, queries WhoKnows for related information.
+ * If params contains a LinkedIn URL, queries WhoKnows for related information.
  * 
- * Signature is AWS lambda compatible, allowing this function to be used directly in a lambda.
+ * Signature is AWS lambda compatible, allowing this function to be used
+ * directly in a lambda if desired.
  * 
  * @param {*} params 
  */
 const enrich = async (event) => {
-  // Could include email here as well, if we wanted, though unclear how WhoKnows handles multiple
-  // identifiers if they are in conflict (e.g. an email address not associated with the linkedIn URL).
+  // Could include email here as well if we wanted, though unclear how WhoKnows
+  // handles multiple identifiers if they conflict (e.g. an email address not
+  // associated with the linkedIn URL).
   return event.linkedIn ? getFromLinkedinUrl(event) : {};
 }
 
+/**
+ * Every enrichment source should export a name and an enrichment method.
+ */
 module.exports = {
   sourceName: 'whoknows',
   enrich
